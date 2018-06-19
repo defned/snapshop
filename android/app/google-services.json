@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "954879073004",
+    "firebase_url": "https://snapshop-ef684.firebaseio.com",
+    "project_id": "snapshop-ef684",
+    "storage_bucket": "snapshop-ef684.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954879073004:android:7c4db77155ed740b",
+        "android_client_info": {
+          "package_name": "cloud.blacksalt.snapshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954879073004-2e3mm1cms2hm9pj18g2a09hmrah6v04i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cloud.blacksalt.snapshop",
+            "certificate_hash": "ecc3e1b7f3862320c0fccb58c29a618461272ab1"
+          }
+        },
+        {
+          "client_id": "954879073004-trbtrlrrol9l50rqcjbe911c6a755s4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChGPJ31DrUvgegcvA1ugeRDhXjoxuFPRY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954879073004-trbtrlrrol9l50rqcjbe911c6a755s4m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "954879073004-pup8jgk33ted5logdo4gq6p5utssklik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "cloud.blacksalt.snapshop"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
