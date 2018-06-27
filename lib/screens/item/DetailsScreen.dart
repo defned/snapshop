@@ -1,15 +1,15 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mlkit/mlkit.dart';
 import 'package:snapshop/screens/item/NewItemScreen.dart';
 
 class DetailScreen extends StatefulWidget {
-  final File _file;
+  final Uint8List _image;
   final String _scannerType;
 
-  DetailScreen(this._file, this._scannerType);
+  DetailScreen(this._image, this._scannerType);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,13 +42,13 @@ class _DetailScreenState extends State<DetailScreen> {
       var currentLabels;
       if (widget._scannerType == TEXT_SCANNER) {
         List<VisionText> currentLabels =
-            await textDetector.detectFromPath(widget._file.path);
+            await textDetector.detectFromBinary(widget._image);
         setState(() {
           _currentTextLabels = Map.fromIterable(currentLabels,
               key: (item) => item, value: (_) => false);
         });
       } else {
-        currentLabels = await barcodeDetector.detectFromPath(widget._file.path);
+        currentLabels = await barcodeDetector.detectFromBinary(widget._image);
         setState(() {
           _currentBarcodeLabels = currentLabels;
         });
@@ -115,11 +115,11 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Container(
           decoration: BoxDecoration(color: Colors.black),
           child: Center(
-            child: widget._file == null
+            child: widget._image == null
                 ? Text('No Image')
                 : FutureBuilder<Size>(
                     future: _getImageSize(
-                        Image.file(widget._file, fit: BoxFit.fitWidth)),
+                        Image.memory(widget._image, fit: BoxFit.fitWidth)),
                     builder:
                         (BuildContext context, AsyncSnapshot<Size> snapshot) {
                       if (snapshot.hasData) {
@@ -171,7 +171,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     }
                                   });
                                 },
-                                child: Image.file(widget._file,
+                                child: Image.memory(widget._image,
                                     fit: BoxFit.fitWidth)));
                       } else {
                         return CircularProgressIndicator();

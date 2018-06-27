@@ -181,7 +181,7 @@ class _ShoppingItemsScreenState extends State<ShoppingItemsScreen> {
                   child: item.image == null
                       ? Container(
                           width: 50.0, height: 50.0, color: kShrinePink300)
-                      : item.image,
+                      : RawImage(image: item.image),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),

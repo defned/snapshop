@@ -1,11 +1,11 @@
-import 'package:flutter/widgets.dart';
+import 'dart:ui' as ui;
 
 enum Currency { unknown, HUF }
 
 class ShoppingItem implements Comparable<ShoppingItem> {
   DateTime created;
   String name;
-  Image image;
+  ui.Image image;
   double count;
   double price;
   Currency currency;

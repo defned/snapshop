@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:snapshop/data/ShoppingItem.dart';
 import 'package:snapshop/main.dart';
 import 'package:snapshop/screens/item/DetailsScreen.dart';
-import 'package:snapshop/util/path.dart';
 
 const String TEXT_SCANNER = 'TEXT_SCANNER';
 const String BARCODE_SCANNER = 'BARCODE_SCANNER';
@@ -31,7 +30,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
   //File _file;
   String _selectedScanner = TEXT_SCANNER;
 
-  Image _image;
+  ui.Image _image;
   String _title;
   //String _description;
   double _count;
@@ -76,11 +75,13 @@ class _NewItemScreenState extends State<NewItemScreen> {
       actions: <Widget>[
         InkWell(
           onTap: () async {
-            File _file = await fileFromImage(_image);
+            ByteData _byteData =
+                await _image.toByteData(format: ui.ImageByteFormat.png);
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(_file, _selectedScanner)),
+                  builder: (context) => DetailScreen(
+                      _byteData.buffer.asUint8List(), _selectedScanner)),
             );
           },
           child: Icon(
@@ -106,7 +107,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 children: <Widget>[
                   Card(
                       child: _image != null
-                          ? _image
+                          ? RawImage(image: _image)
                           : Container(
                               color: kShrinePink50,
                               width: double.infinity,
@@ -391,14 +392,14 @@ class _NewItemScreenState extends State<NewItemScreen> {
     );
   }
 
-  Widget buildImageRow(BuildContext context, File file) {
-    return SizedBox(
-        height: 500.0,
-        child: Image.file(
-          file,
-          fit: BoxFit.fitWidth,
-        ));
-  }
+//  Widget buildImageRow(BuildContext context, File file) {
+//    return SizedBox(
+//        height: 500.0,
+//        child: Image.file(
+//          file,
+//          fit: BoxFit.fitWidth,
+//        ));
+//  }
 
 //  Widget buildDeleteRow(BuildContext context) {
 //    return Center(
@@ -432,17 +433,24 @@ class _NewItemScreenState extends State<NewItemScreen> {
     }
 
     try {
-      final File file = await ImagePicker.pickImage(source: imageSource);
+      //File file = await ImagePicker.pickImage(source: imageSource);
+      var file = await ImagePicker.pickImage(
+          source: ImageSource.gallery, maxWidth: 600.0);
       if (file == null) {
         throw Exception('File is not available');
       }
 
-      _image = Image.file(file);
+      //_image = Image.file(file);
+      final ui.Codec codec =
+          await ui.instantiateImageCodec(file.readAsBytesSync());
+      final ui.FrameInfo frameInfo = await codec.getNextFrame();
+      _image = frameInfo.image;
 
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => DetailScreen(file, _selectedScanner)),
+            builder: (context) =>
+                DetailScreen(file.readAsBytesSync(), _selectedScanner)),
       );
     } catch (e) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
