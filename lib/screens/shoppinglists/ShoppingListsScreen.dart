@@ -8,6 +8,10 @@ import 'package:snapshop/screens/shoppingitems/ShoppingItemsScreen.dart';
 import 'package:snapshop/widgets/FadeRoute.dart';
 
 class ShoppingListsScreen extends StatefulWidget {
+  factory ShoppingListsScreen.forDesignTime() {
+    return new ShoppingListsScreen();
+  }
+
   ShoppingListsScreen({Key key, this.title}) : super(key: key);
 
   final String title;
@@ -152,7 +156,8 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
               ],
             ),
           )),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+          Colors.white, //Theme.of(context).scaffoldBackgroundColor,
       body: items.isEmpty
           ? Center(
               child: RaisedButton(
@@ -162,7 +167,114 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
             )
           : Padding(
               padding: EdgeInsets.all(8.0),
-              child: ListView(children: items.map(buildItem).toList()),
+              child: ListView(children: /*items.map(buildItem).toList() + */
+                  [
+                //SizedBox(height: 50.0),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(35.0),
+                        child: new Text(
+                          "Test1",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0,
+                              color: Colors.grey.shade900.withOpacity(0.95)),
+                        ),
+                      ),
+                    ),
+                    color: Color(0xFFEFA7CB),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(35.0),
+                          child: new Text(
+                            "Test2",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0,
+                                color: Colors.grey.shade900.withOpacity(0.95)),
+                          ),
+                        ),
+                      ),
+                      color: Color(0xFF9CF6FF)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(35.0),
+                        child: new Text(
+                          "Test3",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0,
+                              color: Colors.grey.shade900.withOpacity(0.95)),
+                        ),
+                      ),
+                    ),
+                    color: Color(0xFFFB9A86),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(35.0),
+                          child: new Text(
+                            "Test4",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0,
+                                color: Colors.grey.shade900.withOpacity(0.95)),
+                          ),
+                        ),
+                      ),
+                      color: Color(0xFF8DC6FD)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(35.0),
+                          child: new Text(
+                            "Test5",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0,
+                                color: Colors.grey.shade900.withOpacity(0.95)),
+                          ),
+                        ),
+                      ),
+                      color: Color(0xFFFEC56A)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCandyButton(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(35.0),
+                          child: new Text(
+                            "Test6",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0,
+                                color: Colors.grey.shade900.withOpacity(0.95)),
+                          ),
+                        ),
+                      ),
+                      color: Color(0xFF39EDA4)),
+                ),
+              ]),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -175,4 +287,59 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+Widget buildCandyButton(
+    {Widget child,
+    Color color,
+    BoxShape shape = BoxShape.circle,
+    BorderRadiusGeometry borderRadius =
+        const BorderRadius.all(Radius.circular(5.0))}) {
+  bool colorRotationDirectionInverse = 150.0 <= HSLColor.fromColor(color).hue &&
+      HSLColor.fromColor(color).hue <= 250.0;
+
+  Color _darker1 = HSLColor
+      .fromColor(color)
+      .withSaturation(0.6)
+      .withHue((HSLColor.fromColor(color).hue -
+              (35 * (colorRotationDirectionInverse ? -1 : 1))) %
+          360.0)
+      .withLightness(0.7)
+      .toColor();
+
+  Color _darker2 = HSLColor
+      .fromColor(color)
+      .withSaturation(0.6)
+      .withHue((HSLColor.fromColor(color).hue -
+              (50 * (colorRotationDirectionInverse ? -1 : 1))) %
+          360.0)
+      .withLightness(0.7)
+      .toColor();
+
+  return InkWell(
+    onTap: () {},
+    child: Container(
+        decoration: BoxDecoration(
+          shape: shape,
+          borderRadius: shape == BoxShape.circle ? null : borderRadius,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.78, 1.0],
+            colors: [
+              color,
+              _darker1,
+              _darker2,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: _darker2.withOpacity(0.6),
+                spreadRadius: 0.0,
+                blurRadius: 10.0,
+                offset: Offset(0.0, 5.0)),
+          ],
+        ),
+        child: child),
+  );
 }
