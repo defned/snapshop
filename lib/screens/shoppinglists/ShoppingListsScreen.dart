@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart' show lowerBound;
 import 'package:flutter/material.dart';
 import 'package:snapshop/data/ShoppingList.dart';
@@ -168,7 +170,7 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
           : Padding(
               padding: EdgeInsets.all(8.0),
               child: ListView(children: /*items.map(buildItem).toList() + */
-                  [
+                  <Widget>[
                 //SizedBox(height: 50.0),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -246,7 +248,7 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(35.0),
-                          child: new Text(
+                          child: Text(
                             "Test5",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -255,15 +257,16 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
                           ),
                         ),
                       ),
-                      color: Color(0xFFFEC56A)),
+                      color: Color(0xFFFEC56A),
+                      shape: BoxShape.rectangle),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: buildCandyButton(
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: new Text(
+                          padding: const EdgeInsets.all(105.0),
+                          child: Text(
                             "Test6",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -272,9 +275,15 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
                           ),
                         ),
                       ),
-                      color: Color(0xFF39EDA4)),
+                      color: Color(0xFF39EDA4),
+                      shape: BoxShape.rectangle,
+                      onTap: () {
+                        print("test");
+                      }),
                 ),
-              ]),
+              ]
+              +
+              buildPalette(100)),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -289,14 +298,58 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> {
   }
 }
 
+List<Widget> buildPalette(int value) {
+  List<Widget> result = [];
+  var v = value;
+    for( var rStep = 0; rStep < v; rStep++) {
+
+      Random random = new Random();
+      int red = random.nextInt(256);
+      int green = random.nextInt(256);
+      int blue = random.nextInt(256);
+
+      Color mix = Color(0xFFAAFFFF);
+      // mix the color
+      if (mix != null) {
+        red = ((red + mix.red) / 2).round();
+        green = ((green + mix.green) / 2).round();
+        blue = ((blue + mix.blue) / 2).round();
+      }
+
+          result.add(Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: buildCandyButton(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      "Test6",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.grey.shade900.withOpacity(0.95)),
+                    ),
+                  ),
+                ),
+                color: Color.fromRGBO(red, green, blue, 1.0),
+                onTap: () {
+                  print("test");
+                }),
+          ));
+    }
+
+    return result;
+  }
+
 Widget buildCandyButton(
     {Widget child,
     Color color,
     BoxShape shape = BoxShape.circle,
     BorderRadiusGeometry borderRadius =
-        const BorderRadius.all(Radius.circular(5.0))}) {
-  bool colorRotationDirectionInverse = 150.0 <= HSLColor.fromColor(color).hue &&
-      HSLColor.fromColor(color).hue <= 250.0;
+        const BorderRadius.all(Radius.circular(10.0)),
+    GestureTapCallback onTap}) {
+  bool colorRotationDirectionInverse = (150.0 <= HSLColor.fromColor(color).hue &&
+      HSLColor.fromColor(color).hue <= 240.0) || (HSLColor.fromColor(color).lightness < 0.6);
 
   Color _darker1 = HSLColor
       .fromColor(color)
@@ -316,30 +369,46 @@ Widget buildCandyButton(
       .withLightness(0.7)
       .toColor();
 
-  return InkWell(
-    onTap: () {},
-    child: Container(
-        decoration: BoxDecoration(
-          shape: shape,
-          borderRadius: shape == BoxShape.circle ? null : borderRadius,
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 0.78, 1.0],
-            colors: [
-              color,
-              _darker1,
-              _darker2,
-            ],
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: _darker2.withOpacity(0.6),
-                spreadRadius: 0.0,
-                blurRadius: 10.0,
-                offset: Offset(0.0, 5.0)),
+  return Container(
+      decoration: BoxDecoration(
+        shape: shape,
+        borderRadius: shape == BoxShape.circle ? null : borderRadius,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0.0, /*0.78,*/ 1.0],
+          colors: [
+            color,
+            //_darker1,
+            _darker2,
           ],
         ),
-        child: child),
-  );
+        boxShadow: [
+          BoxShadow(
+              color: _darker2.withOpacity(0.4),
+              spreadRadius: 0.0,
+              blurRadius: 5.0,
+              offset: Offset(0.0, 7.0)),
+        ],
+      ),
+      child: new Material(
+          type: MaterialType.transparency,
+          color: Colors.transparent,
+          shape: shape == BoxShape.circle
+              ? CircleBorder()
+              : RoundedRectangleBorder(borderRadius: borderRadius),
+          child: new InkWell(
+              splashColor: _darker2,
+              highlightColor: _darker1,
+              onTap: () {
+                if (onTap != null) onTap();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: Padding(
+                  padding: const EdgeInsets.all(35.0),
+                  child: child
+                  //child: Text("${HSLColor.fromColor(color).lightness}\n${HSLColor.fromColor(_darker2).lightness}\n$colorRotationDirectionInverse", textScaleFactor: 1.5,),
+                )),
+              )/*child*/)));
 }

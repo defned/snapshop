@@ -25,9 +25,6 @@ class _DetailScreenState extends State<DetailScreen> {
   Map<VisionBarcode, bool> _currentBarcodeLabels =
       new Map<VisionBarcode, bool>();
 
-  //List<VisionText> _currentTextLabels = <VisionText>[];
-  //List<VisionBarcode> _currentBarcodeLabels = <VisionBarcode>[];
-
   @override
   void initState() {
     super.initState();
