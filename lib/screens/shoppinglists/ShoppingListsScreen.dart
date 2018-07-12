@@ -304,11 +304,11 @@ List<Widget> buildPalette(int value) {
     for( var rStep = 0; rStep < v; rStep++) {
 
       Random random = new Random();
-      int red = random.nextInt(256);
-      int green = random.nextInt(256);
-      int blue = random.nextInt(256);
+      int red = 28 + random.nextInt(100) + 127;
+      int green = 28 + random.nextInt(100) + 127;
+      int blue = 28 + random.nextInt(100) + 127;
 
-      Color mix = Color(0xFFAAFFFF);
+      Color mix = null;//Color(0xFFAAFFFF);
       // mix the color
       if (mix != null) {
         red = ((red + mix.red) / 2).round();
