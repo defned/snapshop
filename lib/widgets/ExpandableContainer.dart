@@ -18,7 +18,7 @@ class ExpandableContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     if (expanded) {
       return AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         //width: screenWidth,
         height: expandedHeight,
@@ -26,11 +26,11 @@ class ExpandableContainer extends StatelessWidget {
       );
     } else {
       return AnimatedContainer(
-          duration: Duration(milliseconds: 500),
+          duration: Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           //width: screenWidth,
           height: collapsedHeight,
-          child: Container(child: child));
+          child: Container());
     }
   }
 }

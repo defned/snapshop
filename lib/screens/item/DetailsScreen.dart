@@ -59,6 +59,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.0,
           centerTitle: true,
           title: Text(widget._scannerType == TEXT_SCANNER
               ? 'Text Recognition'
